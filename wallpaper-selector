@@ -1,0 +1,11 @@
+#!/bin/bash
+
+export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/1000/bus"
+APPEARANCE_STYLE="uri-dark" #uri or uri-dark
+
+[ ! -d "$PATH_OF_WALLPAPERS" ] && echo "folder not exist !" && exit 1
+COUNT=$(ls -1 "$PATH_OF_WALLPAPERS" | wc -l)
+[ $COUNT -le 0 ] && echo "folder is empty !" && exit 1
+PICKED="$(ls -1 "$PATH_OF_WALLPAPERS" | head -n $(shuf -i 1-${COUNT} -n 1) | tail -n 1)"
+
+gsettings set org.gnome.desktop.background picture-${APPEARANCE_STYLE} "file://${PATH_OF_WALLPAPERS}/${PICKED}"
